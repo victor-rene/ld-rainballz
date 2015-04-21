@@ -1,3 +1,8 @@
+ld-rainballz
+============
+This is a mouse control challenge. Can you hit and dodge while controlling
+two balls at the same time?
+
 How to win
 ----------
 Right click: Move maxiball to grab powerups (combo points)

@@ -38,7 +38,7 @@ class Rainball(Image):
         self.bullets = Bullets(size=self.size)
         super(Rainball, self).__init__(**kw)
         self.add_widget(self.img_element)
-        
+
     def on_size(self, *args):
         self.bullets.size = self.width * 2, self.height * 2
 
@@ -51,7 +51,7 @@ class Rainball(Image):
         else:
             self.img_element.color = light_colors[self.element]
             self.color = dark_colors[self.element]
-            
+
     def on_deployed(self, *args):
         if self.deployed:
             self.hitbox = self.bullets.width / 2.
