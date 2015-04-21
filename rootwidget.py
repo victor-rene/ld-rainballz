@@ -89,7 +89,7 @@ class RootWidget(Widget):
         powerup = self.powerup
         powerup.move()
         d_maxi =  distance(powerup, maxiball)
-        if d_maxi < powerup.hitbox or d_maxi < maxiball.hitbox:
+        if d_maxi < powerup.hitbox + maxiball.hitbox:
             self.combo += 1
             sounds['powerup'].play()
             maxiball.color = powerup.fg_img.color
@@ -97,24 +97,27 @@ class RootWidget(Widget):
             if powerup.element == 'ice':
                 for i in range(self.level):
                     self.rainboxes[i].frozen = 180
-            elif powerup.element == 'fire':
-                miniball.deployed = True
+            print miniball.hitbox
+            miniball.deployed = powerup.element == 'fire'
+            print miniball.hitbox
             powerup.reset()
         # mistake mini
         d_mini =  distance(powerup, miniball)
-        if d_mini < powerup.hitbox or d_mini < miniball.hitbox:
+        if d_mini < powerup.hitbox + miniball.hitbox:
             self.combo = 1
             sounds['hurt'].play()
             powerup.reset()
             if maxiball.element == 'stone':
                 self.end_game()
             else: maxiball.element = 'stone'
+            miniball.deployed = False
         # box collision
         for i in range(self.level):
             rainbox = self.rainboxes[i]
             rainbox.move()
             d_mini =  distance(rainbox, miniball)
-            if d_mini < rainbox.hitbox or d_mini < miniball.hitbox:
+            if d_mini < rainbox.hitbox + miniball.hitbox:
+                print rainbox.hitbox, miniball.hitbox
                 self.hits += 1
                 self.cons += 1
                 if self.cons == 10:
@@ -125,13 +128,14 @@ class RootWidget(Widget):
                 rainbox.reset()
             # mistake maxi
             d_maxi =  distance(rainbox, maxiball)
-            if d_maxi < rainbox.hitbox or d_maxi < maxiball.hitbox:
+            if d_maxi < rainbox.hitbox + maxiball.hitbox:
                 self.cons = 0
                 sounds['hurt'].play()
                 rainbox.reset()
                 if maxiball.element == 'stone':
                     self.end_game()
                 else: maxiball.element = 'stone'
+                miniball.deployed = False
         # labels update
         self.lbl_fps.text = 'FPS: %d' % Clock.get_fps()
         self.lbl_hits.text = 'HITS: x%d (%d)' % (self.cons, self.hits)

@@ -31,13 +31,16 @@ class Rainball(Image):
         self.angle = 0
         self.rotation = 1
         self.target = None
-        self.hitbox = self.size[0] * .8
+        self.hitbox = self.size[0] * .5
         self.img_element = Image(
             source='img/blank.png',
             size=(self.width/2.,self.height/2.))
+        self.bullets = Bullets(size=self.size)
         super(Rainball, self).__init__(**kw)
         self.add_widget(self.img_element)
-        self.bullets = Bullets(size=(120, 120))
+        
+    def on_size(self, *args):
+        self.bullets.size = self.width * 2, self.height * 2
 
     def on_element(self, *args):
         self.img_element.source = 'img/%s.png' % self.element
@@ -50,13 +53,14 @@ class Rainball(Image):
             self.color = dark_colors[self.element]
             
     def on_deployed(self, *args):
-        if self.deployed and not self.bullets in self.children:
-            self.add_widget(self.bullets)
-            self.hit_box = self.size[0] * 2.
+        if self.deployed:
+            self.hitbox = self.bullets.width / 2.
+            if not self.bullets in self.children:
+                self.add_widget(self.bullets)
         else:
+            self.hitbox = self.width / 2.
             if self.bullets in self.children:
                 self.remove_widget(self.bullets)
-                self.hit_box = self.size[0] * 0.8
 
     def move(self):
         if self.target:

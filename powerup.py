@@ -62,7 +62,7 @@ class Powerup(Widget):
         # size
         scale = randint(1, 3)
         self.size = (60 * scale, 60 * scale)
-        self.hitbox = 60 * scale * .66
+        self.hitbox = 60 * scale * .33
         self.speed = (4 - scale) * 3
 
     def move(self):
