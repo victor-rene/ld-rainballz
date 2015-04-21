@@ -1,0 +1,10 @@
+# Python compiled files
+*.pyc
+
+# Design folders
+/art
+/design
+/screenshot
+
+# Windows scripts
+*.cmd
